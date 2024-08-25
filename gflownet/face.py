@@ -1,5 +1,6 @@
 import matplotlib.pyplot as matplotlib_pyplot
 import numpy as numpy
+import torch
 
 class Face:
     patches = {
@@ -47,6 +48,11 @@ class Face:
             return 1  # and a reward of 1 for frowns
         # If we reach this point, there's no mouth
         return 0
+
+    # We first define how the model will view a face, i.e. how to encode a face in
+    # a tensor
+    def face_to_tensor(self):
+        return torch.tensor([i in self.patches for i in Face.sorted_keys]).float()
 
     def __eq__(self, other):
         return isinstance(other, Face) and set(self.patches) == set(other.patches)
