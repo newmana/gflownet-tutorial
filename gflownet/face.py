@@ -83,6 +83,9 @@ class Face:
     def __ge__(self, other):
         return not (self < other)
 
+    def face_hash(self):
+        return tuple([i in self.patches for i in Face.sorted_keys])
+
     @staticmethod
     def base_face():
         matplotlib_pyplot.gca().add_patch(matplotlib_pyplot.Circle((0.5, 0.5), 0.5, fc=(.9, .9, 0)))
@@ -100,6 +103,6 @@ class Face:
                 if i not in s.patches:
                     recursively_enumerate(Face(s.patches + [i]))
             enumerated_states.append(s)
-            transitions.append((s.patches[:-1], s.patches))
+            transitions.append((Face(s.patches[:-1]), Face(s.patches)))
         recursively_enumerate(Face([]))
         return enumerated_states, transitions
